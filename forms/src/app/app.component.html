@@ -3,7 +3,11 @@
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <form (ngSubmit)="onSubmit()" #f="ngForm">
         <div id="user-data">
-          <div class="form-group">
+          <div
+            class="form-group"
+            ngModelGroup="userData"
+            #userData="ngModelGroup"
+          >
             <label for="username">Username</label>
             <input
               type="text"
@@ -14,7 +18,11 @@
               required
             />
           </div>
-          <button class="btn btn-default" type="button">
+          <button
+            class="btn btn-default"
+            type="button"
+            (click)="suggestUserName()"
+          >
             Suggest an Username
           </button>
           <div class="form-group">
@@ -35,6 +43,7 @@
             >
           </div>
         </div>
+        <p *ngIf="!userData.valid && userData.touched">User Data is invalid!</p>
         <div class="form-group">
           <label for="secret">Secret Questions</label>
           <select
@@ -56,9 +65,98 @@
           ></textarea>
         </div>
         <p>Your reply: {{ answer }}</p>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              ngModel
+              [value]="gender"
+              required
+            />
+            {{ gender }}
+          </label>
+        </div>
         <button class="btn btn-primary" type="submit" [disabled]="!f.valid">
           Submit
         </button>
+      </form>
+    </div>
+  </div>
+  <hr />
+  <div class="row" *ngIf="submitted">
+    <div class="col-xs-12">
+      <h3>Your Data</h3>
+      <p>Username: {{ user.username }}</p>
+      <p>Mail: {{ user.email }}</p>
+      <p>Secret Question: Your first {{ user.secretQuestion }}</p>
+      <p>Answer: {{ user.answer }}</p>
+      <p>Gender: {{ user.gender }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <!-- // Add a Form with the following Inputs (and Validators)
+      //      1) Mail address (should not be empty and should be an email address)
+      //      2) A Dropdown which allows the user to select from three different Subscriptions ("Basic", "Advanced", "Pro")
+      //         Set "Advanced" as Default
+      //      3) A Password field (should not be empty)
+      //      4) A Submit Button
+
+      //      Display a warning message if the Form is invalid AND was touched. Display a warning message below each input if it's invalid.
+
+      //      Upon submitting the form, you should simply print the Value of the Form to the Console.
+      //      Optionally, display it in your template.
+      // -->
+
+      <form>
+        <div class="form-group">
+          <label for="email">Mail</label>
+          <input
+            type="email"
+            id="email"
+            ngModel
+            name="email"
+            required
+            email2
+            class="form-control"
+            #email="ngModel"
+          />
+          <span class="help-block" *ngIf="!email.valid && email.touched"
+            >Please enter a valid value!</span
+          >
+        </div>
+        <div class="form-group">
+          <label for="subscription">Choose a Subscription</label>
+          <select
+            name="subscription"
+            id="subscription"
+            [ngModel]="selectedSubscription"
+            class="form-control"
+          >
+            <option
+              *ngFor="let subscription of subscriptions"
+              [value]="subscription"
+            >
+              {{ subscription }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            ngModel
+            required
+            class="form-control"
+          />
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
       </form>
     </div>
   </div>
